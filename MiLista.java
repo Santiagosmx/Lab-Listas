@@ -106,7 +106,10 @@ public class MiLista implements ListInterface{
             return false;
         }
         else{
-            while ()
+            while (iterador.dato != node){
+                iterador = iterador.siguiente;
+            }
+            ListNode nuevoNodo = new ListNode(object);
         }
     }
     @Override
