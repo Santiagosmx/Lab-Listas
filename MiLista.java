@@ -36,7 +36,6 @@ public class MiLista implements ListInterface{
     @Override
     public void clear() {
         this.cabeza = null;
-
     }
 
     @Override
@@ -60,9 +59,8 @@ public class MiLista implements ListInterface{
             if(iterador.dato == node.dato ){
                 return iterador.dato;
             }
-            else{
-                iterador = iterador.siguiente;
-            }
+            iterador = iterador.siguiente;
+
         }
         return null;
     }
@@ -70,14 +68,15 @@ public class MiLista implements ListInterface{
     @Override
     public Object search(Object object) {
         ListNode iterador = this.cabeza;
-        while(iterador != null){
-            if (iterador.dato == object){
+
+        while (iterador != null) {
+            if (iterador.dato.equals(object)) {
                 return iterador.dato;
             }
-            else{
-                iterador = iterador.siguiente;
-            }
+
+            iterador = iterador.siguiente;
         }
+
         return null;
     }
 
@@ -89,32 +88,45 @@ public class MiLista implements ListInterface{
             this.cabeza = nuevaCabeza;
             return true;
         }
-        else{
-            while(iterador.siguiente != null){
-                iterador = iterador.siguiente;
-            }
-            ListNode nuevoNodo = new ListNode(object);
-            iterador.siguiente = nuevoNodo;
-            return true;
+        while(iterador.siguiente != null){
+            iterador = iterador.siguiente;
         }
+        ListNode nuevoNodo = new ListNode(object);
+        iterador.siguiente = nuevoNodo;
+        return true;
+
     }
 
     @Override
     public boolean insert(ListNode node, Object object) {
         ListNode iterador = this.cabeza;
+        while (iterador != null && iterador != node){
+            iterador = iterador.siguiente;
+        }
         if (iterador == null){
             return false;
         }
-        else{
-            while (iterador.dato != node){
-                iterador = iterador.siguiente;
-            }
-            ListNode nuevoNodo = new ListNode(object);
-        }
+        ListNode nuevoNodo = new ListNode(object);
+        nuevoNodo.siguiente = iterador.siguiente;
+        iterador.siguiente = nuevoNodo;
+
+        return true;
     }
+
     @Override
     public boolean insert(Object ob, Object object) {
-        return false;
+        ListNode iterador = this.cabeza;
+        while (iterador != null && !iterador.dato.equals(ob)){
+            iterador = iterador.siguiente;
+        }
+        if (iterador == null){
+            return false;
+        }
+        ListNode nuevoNodo = new ListNode(object);
+        nuevoNodo.siguiente = iterador.siguiente;
+        iterador.siguiente = nuevoNodo;
+
+        return true;
     }
 
     @Override
@@ -153,68 +165,210 @@ public class MiLista implements ListInterface{
 
     @Override
     public boolean set(ListNode node, Object object) {
-        return false;
+        ListNode iterador = this.cabeza;
+        while (iterador != null && iterador != node){
+            iterador = iterador.siguiente;
+        }
+        if (iterador == null){
+            return false;
+        }
+        iterador.dato = object;
+
+        return true;
     }
 
     @Override
     public boolean remove(ListNode node) {
-        return false;
+        ListNode anterior = null;
+        ListNode iterador = this.cabeza;
+        while(iterador != null && iterador != node){
+            anterior = iterador;
+            iterador = iterador.siguiente;
+        }
+        if (iterador == null){
+            return false;
+        }
+        else if(iterador == this.cabeza){
+          this.cabeza = iterador.siguiente;
+        }
+        else{
+            anterior.siguiente = iterador.siguiente;
+        }
+        return true;
     }
 
     @Override
     public boolean contains(Object object) {
-        return false;
+        ListNode iterador = this.cabeza;
+        while(iterador != null && !iterador.dato.equals(object)){
+            iterador = iterador.siguiente;
+        }
+        if(iterador == null){
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public Iterator<ListNode> iterator() {
-        return null;
+    public java.util.Iterator<ListNode> iterator() {
+        return new java.util.Iterator<ListNode>() {
+
+            private ListNode actual = cabeza;
+
+            @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            @Override
+            public ListNode next() {
+                ListNode temporal = actual;
+                actual = actual.siguiente;
+                return temporal;
+            }
+        };
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        int cantidad = 0;
+        ListNode iterador = this.cabeza;
+
+        while (iterador != null) {
+            cantidad++;
+            iterador = iterador.siguiente;
+        }
+
+        Object[] array = new Object[cantidad];
+
+        iterador = this.cabeza;
+        int i = 0;
+
+        while (iterador != null) {
+            array[i] = iterador.dato;
+            iterador = iterador.siguiente;
+            i++;
+        }
+
+        return array;
     }
 
     @Override
     public Object[] toArray(Object[] object) {
-        return new Object[0];
+        ListNode iterador = this.cabeza;
+        int i = 0;
+
+        while (iterador != null && i < object.length) {
+            object[i] = iterador.dato;
+            iterador = iterador.siguiente;
+            i++;
+        }
+
+        return object;
     }
 
     @Override
     public Object getBeforeTo() {
-        return null;
+        if (this.cabeza == null || this.cabeza.siguiente == null) {
+            return null;
+        }
+
+        ListNode iterador = this.cabeza;
+
+        while (iterador.siguiente.siguiente != null) {
+            iterador = iterador.siguiente;
+        }
+
+        return iterador.dato;
     }
 
     @Override
     public Object getBeforeTo(ListNode node) {
-        return null;
+        if (this.cabeza == null || this.cabeza == node) {
+            return null;
+        }
+
+        ListNode anterior = null;
+        ListNode iterador = this.cabeza;
+
+        while (iterador != null && iterador != node) {
+            anterior = iterador;
+            iterador = iterador.siguiente;
+        }
+
+        if (iterador == null) {
+            return null;
+        }
+
+        return anterior.dato;
     }
 
     @Override
     public Object getNextTo() {
-        return null;
+        if (this.cabeza == null) {
+            return null;
+        }
+
+        return this.cabeza.siguiente;
     }
 
     @Override
     public Object getNextTo(ListNode node) {
-        return null;
+        if (node == null) {
+            return null;
+        }
+
+        return node.siguiente;
     }
 
     @Override
     public MiLista subList(ListNode from, ListNode to) {
-        return null;
+        MiLista nuevaLista = new MiLista();
+        ListNode iterador = from;
+
+        while (iterador != null) {
+            nuevaLista.add(iterador.dato);
+
+            if (iterador == to) {
+                break;
+            }
+
+            iterador = iterador.siguiente;
+        }
+
+        return nuevaLista;
     }
 
     @Override
     public MiLista sortList() {
-        return null;
+        MiLista nuevaLista = new MiLista();
+
+        ListNode iterador = this.cabeza;
+
+        while (iterador != null) {
+            iterador = iterador.siguiente;
+        }
+
+        return nuevaLista;
     }
 
     @Override
     public String toString() {
-        return "MiLista{" +
-                "cabeza=" + cabeza +
-                '}';
+        String resultado = "[";
+        ListNode iterador = this.cabeza;
+
+        while (iterador != null) {
+            resultado += iterador.dato;
+
+            if (iterador.siguiente != null) {
+                resultado += ", ";
+            }
+
+            iterador = iterador.siguiente;
+        }
+
+        resultado += "]";
+
+        return resultado;
     }
 }
