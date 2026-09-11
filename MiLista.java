@@ -59,7 +59,7 @@ public class MiLista implements ListInterface{
     public Object get(ListNode node) {
         ListNode iterador = this.cabeza;
         while (iterador != null) {
-            if(iterador.dato == node.dato ){
+            if(iterador == node){
                 return iterador.dato;
             }
             iterador = iterador.siguiente;
