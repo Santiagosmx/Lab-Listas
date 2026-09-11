@@ -43,7 +43,7 @@ public class MiLista implements ListInterface{
         if(cabeza == null){
             return null;
         }
-        return cabeza.dato
+        return cabeza.dato;
     }
 
     @Override
@@ -212,25 +212,6 @@ public class MiLista implements ListInterface{
         return true;
     }
 
-    @Override
-    public java.util.Iterator<ListNode> iterator() {
-        return new java.util.Iterator<ListNode>() {
-
-            private ListNode actual = cabeza;
-
-            @Override
-            public boolean hasNext() {
-                return actual != null;
-            }
-
-            @Override
-            public ListNode next() {
-                ListNode temporal = actual;
-                actual = actual.siguiente;
-                return temporal;
-            }
-        };
-    }
 
     @Override
     public Object[] toArray() {
@@ -270,20 +251,7 @@ public class MiLista implements ListInterface{
         return object;
     }
 
-    @Override
-    public Object getBeforeTo() {
-        if (this.cabeza == null || this.cabeza.siguiente == null) {
-            return null;
-        }
 
-        ListNode iterador = this.cabeza;
-
-        while (iterador.siguiente.siguiente != null) {
-            iterador = iterador.siguiente;
-        }
-
-        return iterador.dato;
-    }
 
     @Override
     public Object getBeforeTo(ListNode node) {
@@ -306,14 +274,6 @@ public class MiLista implements ListInterface{
         return anterior.dato;
     }
 
-    @Override
-    public Object getNextTo() {
-        if (this.cabeza == null) {
-            return null;
-        }
-
-        return this.cabeza.siguiente;
-    }
 
     @Override
     public Object getNextTo(ListNode node) {
