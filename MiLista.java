@@ -40,7 +40,10 @@ public class MiLista implements ListInterface{
 
     @Override
     public Object getHead() {
-        return cabeza;
+        if(cabeza == null){
+            return null;
+        }
+        return cabeza.dato
     }
 
     @Override
